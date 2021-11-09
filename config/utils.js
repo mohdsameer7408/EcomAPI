@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import bcypt from "bcryptjs";
 
-const generateToken = async (userData) =>
+const generateToken = (userData) =>
   jwt.sign(
     { _id: userData._id, userName: userData.userName, email: userData.email },
     process.env.JWT_SECRET
   );
 
-const verifyToken = async (req, res, next) => {
+const verifyToken = (req, res, next) => {
   const token = req.header("auth-token");
   if (!token) return res.status(401).json("Access denied!");
 

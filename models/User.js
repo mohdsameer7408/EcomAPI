@@ -8,7 +8,7 @@ const schemaOptions = {
 
 const userSchema = new mongoose.Schema(
   {
-    username: schemaOptions,
+    userName: schemaOptions,
     email: schemaOptions,
     password: { ...schemaOptions, unique: false },
   },
