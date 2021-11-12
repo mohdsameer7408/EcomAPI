@@ -8,6 +8,7 @@ const schemaOptions = {
 const productSchema = new mongoose.Schema(
   {
     name: schemaOptions,
+    imageUrl: schemaOptions,
     desciption: schemaOptions,
     category: schemaOptions,
     price: schemaOptions,
