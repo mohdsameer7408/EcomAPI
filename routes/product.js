@@ -24,4 +24,17 @@ router.post("/products/create", verifyToken, async (req, res) => {
   }
 });
 
+router.patch("/product/update/:id", verifyToken, async (req, res) => {
+  try {
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true }
+    );
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
 export default router;
