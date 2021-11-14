@@ -37,4 +37,15 @@ router.patch("/product/update/:id", verifyToken, async (req, res) => {
   }
 });
 
+router.delete("/product/delete/:id", verifyToken, async (req, res) => {
+  try {
+    const deletedProduct = await Product.findOneAndDelete({
+      _id: req.params.id,
+    });
+    res.status(200).json(deletedProduct);
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
 export default router;
