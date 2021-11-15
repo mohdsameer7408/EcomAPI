@@ -3,7 +3,12 @@ import bcypt from "bcryptjs";
 
 const generateToken = (userData) =>
   jwt.sign(
-    { _id: userData._id, userName: userData.userName, email: userData.email },
+    {
+      _id: userData._id,
+      userName: userData.userName,
+      email: userData.email,
+      userType: userData.userType,
+    },
     process.env.JWT_SECRET
   );
 

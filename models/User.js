@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
     userName: schemaOptions,
     email: schemaOptions,
     password: { ...schemaOptions, unique: false },
+    userType: { ...schemaOptions, unique: false, default: "user" },
   },
   { timestamps: true }
 );

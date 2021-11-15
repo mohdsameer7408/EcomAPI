@@ -22,7 +22,12 @@ router.post("/register", async (req, res) => {
 
     const userName = email.split("@", 1)[0];
     const hashedPassword = await generateHashedPassword(password);
-    const user = new User({ userName, email, password: hashedPassword });
+    const user = new User({
+      userName,
+      email,
+      password: hashedPassword,
+      // userType: "user",
+    });
     const createdUser = await user.save();
     const token = generateToken(createdUser);
 
@@ -30,6 +35,7 @@ router.post("/register", async (req, res) => {
       _id: createdUser._id,
       userName: createdUser.userName,
       email: createdUser.email,
+      userType: createdUser.userType,
       token,
     });
   } catch (error) {
@@ -57,6 +63,7 @@ router.post("/login", async (req, res) => {
       _id: doesUserExists._id,
       userName: doesUserExists.userName,
       email: doesUserExists.email,
+      userType: doesUserExists.userType,
       token,
     });
   } catch (error) {
@@ -84,6 +91,7 @@ router.patch("/profile/update", verifyToken, async (req, res) => {
       _id: updatedUser._id,
       userName: updatedUser.userName,
       email: updatedUser.email,
+      userType: updatedUser.userType,
       token,
     });
   } catch (error) {

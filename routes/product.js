@@ -16,6 +16,11 @@ router.get("/products", async (req, res) => {
 
 router.post("/products/create", verifyToken, async (req, res) => {
   try {
+    if (req.user.userType !== "admin")
+      return res
+        .status(400)
+        .json("You are not permitted to perform this operation");
+
     const product = new Product(req.body);
     const createdProduct = await product.save();
     res.status(201).json(createdProduct);
@@ -26,6 +31,11 @@ router.post("/products/create", verifyToken, async (req, res) => {
 
 router.patch("/product/update/:id", verifyToken, async (req, res) => {
   try {
+    if (req.user.userType !== "admin")
+      return res
+        .status(400)
+        .json("You are not permitted to perform this operation");
+
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: req.params.id },
       req.body,
@@ -39,6 +49,11 @@ router.patch("/product/update/:id", verifyToken, async (req, res) => {
 
 router.delete("/product/delete/:id", verifyToken, async (req, res) => {
   try {
+    if (req.user.userType !== "admin")
+      return res
+        .status(400)
+        .json("You are not permitted to perform this operation");
+
     const deletedProduct = await Product.findOneAndDelete({
       _id: req.params.id,
     });
