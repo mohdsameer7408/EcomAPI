@@ -26,7 +26,6 @@ router.post("/register", async (req, res) => {
       userName,
       email,
       password: hashedPassword,
-      // userType: "user",
     });
     const createdUser = await user.save();
     const token = generateToken(createdUser);
