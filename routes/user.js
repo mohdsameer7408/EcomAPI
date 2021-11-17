@@ -128,4 +128,21 @@ router.patch("/profile/reset-password", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/user/auto-login", verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const token = req.header("auth-token");
+
+    res.status(200).header("auth-token", token).json({
+      _id: user._id,
+      userName: user.userName,
+      email: user.email,
+      userType: user.userType,
+      token,
+    });
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
 export default router;
