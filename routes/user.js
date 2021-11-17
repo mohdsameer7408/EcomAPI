@@ -98,4 +98,34 @@ router.patch("/profile/update", verifyToken, async (req, res) => {
   }
 });
 
+router.patch("/profile/reset-password", verifyToken, async (req, res) => {
+  try {
+    const { currentPassword, password } = req.body;
+    const user = await User.findById(req.user._id);
+    const isCurrentPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    if (!isCurrentPasswordValid)
+      return res.status(400).json(`Current password dosen't match!`);
+
+    const hashedPassword = await generateHashedPassword(password);
+    user.password = hashedPassword;
+
+    const updatedUser = await user.save();
+    const token = req.header("auth-token");
+
+    res.status(200).header("auth-token", token).json({
+      _id: updatedUser._id,
+      userName: updatedUser.userName,
+      email: updatedUser.email,
+      userType: updatedUser.userType,
+      token,
+    });
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
 export default router;
