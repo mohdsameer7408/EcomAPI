@@ -14,6 +14,15 @@ router.get("/products", async (req, res) => {
   }
 });
 
+router.get("/products/:catogory", async (req, res) => {
+  try {
+    const products = await Product.find({ category: req.params.catogory });
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
 router.post("/products/create", verifyToken, async (req, res) => {
   try {
     if (req.user.userType !== "admin")
