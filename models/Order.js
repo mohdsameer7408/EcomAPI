@@ -9,6 +9,7 @@ const orderSchema = new mongoose.Schema(
   {
     orderItems: [
       {
+        productId: schemaOptions,
         name: schemaOptions,
         imageUrl: schemaOptions,
         quantity: schemaOptions,
