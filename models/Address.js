@@ -14,6 +14,7 @@ const addressSchema = new mongoose.Schema(
     zipCode: schemaOptions,
     country: schemaOptions,
     mobile: schemaOptions,
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
