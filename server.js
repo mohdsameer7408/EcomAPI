@@ -6,6 +6,7 @@ import connectDB, { gfs, upload } from "./config/db.js";
 import userRouter from "./routes/user.js";
 import productRouter from "./routes/product.js";
 import orderRouter from "./routes/order.js";
+import addressRouter from "./routes/address.js";
 
 // configuration
 dotenv.config({ path: "./config/config.env" });
@@ -24,6 +25,7 @@ app.get("/", (req, res) => res.status(200).json("Hello world"));
 app.use("/api", userRouter);
 app.use("/api", productRouter);
 app.use("/api", orderRouter);
+app.use("/api", addressRouter);
 
 app.post("/api/upload/image", upload.single("file"), async (req, res) =>
   res.status(201).json(req.file)
