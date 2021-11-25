@@ -18,4 +18,15 @@ router.get("/addresses", verifyToken, async (req, res) => {
   }
 });
 
+router.post("/addresses/create", verifyToken, async (req, res) => {
+  try {
+    const address = new Address({ ...req.body, userId: req.user._id });
+    const createdAddress = await address.save();
+
+    res.status(201).json(createdAddress);
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
 export default router;
