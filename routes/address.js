@@ -29,4 +29,21 @@ router.post("/addresses/create", verifyToken, async (req, res) => {
   }
 });
 
+router.post("/addresses/update/:id", verifyToken, async (req, res) => {
+  try {
+    const address = await Address.findOne({ _id: req.params.id });
+    if (address.userId.toString() !== req.user._id)
+      return res.status(400).json(`Not allowed!`);
+
+    const updatedAddress = await Address.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true }
+    );
+    res.status(201).json(updatedAddress);
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
 export default router;
