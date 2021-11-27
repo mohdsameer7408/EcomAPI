@@ -29,7 +29,7 @@ router.post("/addresses/create", verifyToken, async (req, res) => {
   }
 });
 
-router.post("/addresses/update/:id", verifyToken, async (req, res) => {
+router.patch("/addresses/update/:id", verifyToken, async (req, res) => {
   try {
     const address = await Address.findOne({ _id: req.params.id });
     if (address.userId.toString() !== req.user._id)
@@ -41,6 +41,21 @@ router.post("/addresses/update/:id", verifyToken, async (req, res) => {
       { new: true }
     );
     res.status(201).json(updatedAddress);
+  } catch (error) {
+    res.status(500).json(`Something went wrong and an error occured: ${error}`);
+  }
+});
+
+router.delete("/addresses/delete/:id", verifyToken, async (req, res) => {
+  try {
+    const address = await Address.findOne({ _id: req.params.id });
+    if (address.userId.toString() !== req.user._id)
+      return res.status(400).json(`Not allowed!`);
+
+    const deletedAddress = await Address.findOneAndDelete({
+      _id: req.params.id,
+    });
+    res.status(201).json(deletedAddress);
   } catch (error) {
     res.status(500).json(`Something went wrong and an error occured: ${error}`);
   }
