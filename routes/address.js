@@ -40,7 +40,7 @@ router.patch("/addresses/update/:id", verifyToken, async (req, res) => {
       req.body,
       { new: true }
     );
-    res.status(201).json(updatedAddress);
+    res.status(200).json(updatedAddress);
   } catch (error) {
     res.status(500).json(`Something went wrong and an error occured: ${error}`);
   }
@@ -55,7 +55,7 @@ router.delete("/addresses/delete/:id", verifyToken, async (req, res) => {
     const deletedAddress = await Address.findOneAndDelete({
       _id: req.params.id,
     });
-    res.status(201).json(deletedAddress);
+    res.status(200).json(deletedAddress);
   } catch (error) {
     res.status(500).json(`Something went wrong and an error occured: ${error}`);
   }
