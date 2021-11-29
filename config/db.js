@@ -74,6 +74,25 @@ const connectDB = async () => {
         console.log("An unknown operation was triggered!");
       }
     });
+    const orderChangeStream = mongoose.connection.collection("orders").watch();
+    orderChangeStream.on("change", (change) => {
+      console.log("Change stream was triggered!");
+      console.log(change);
+
+      if (change.operationType === "insert") {
+        const data = change.fullDocument;
+        console.log("A user was created!");
+        pusher.trigger("users", "inserted", data);
+      } else if (
+        change.operationType === "update" ||
+        change.operationType === "delete"
+      ) {
+        console.log("A user was updated or deleted!");
+        pusher.trigger("users", "inserted", change.documentKey);
+      } else {
+        console.log("An unknown operation was triggered!");
+      }
+    });
   } catch (error) {
     console.log(`Error while connecting with MongoDB: ${error}`);
   }
