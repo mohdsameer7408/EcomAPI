@@ -74,6 +74,7 @@ const connectDB = async () => {
         console.log("An unknown operation was triggered!");
       }
     });
+
     const orderChangeStream = mongoose.connection.collection("orders").watch();
     orderChangeStream.on("change", (change) => {
       console.log("Change stream was triggered!");
@@ -81,14 +82,36 @@ const connectDB = async () => {
 
       if (change.operationType === "insert") {
         const data = change.fullDocument;
-        console.log("A user was created!");
-        pusher.trigger("users", "inserted", data);
+        console.log("A order was created!");
+        pusher.trigger("orders", "inserted", data);
       } else if (
         change.operationType === "update" ||
         change.operationType === "delete"
       ) {
-        console.log("A user was updated or deleted!");
-        pusher.trigger("users", "inserted", change.documentKey);
+        console.log("A order was updated or deleted!");
+        pusher.trigger("orders", "inserted", change.documentKey);
+      } else {
+        console.log("An unknown operation was triggered!");
+      }
+    });
+
+    const addressChangeStream = mongoose.connection
+      .collection("addresses")
+      .watch();
+    addressChangeStream.on("change", (change) => {
+      console.log("Change stream was triggered!");
+      console.log(change);
+
+      if (change.operationType === "insert") {
+        const data = change.fullDocument;
+        console.log("A address was created!");
+        pusher.trigger("addresses", "inserted", data);
+      } else if (
+        change.operationType === "update" ||
+        change.operationType === "delete"
+      ) {
+        console.log("A address was updated or deleted!");
+        pusher.trigger("addresses", "inserted", change.documentKey);
       } else {
         console.log("An unknown operation was triggered!");
       }
