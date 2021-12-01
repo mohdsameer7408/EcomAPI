@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
   {
     name: schemaOptions,
     imageUrl: schemaOptions,
-    desciption: schemaOptions,
+    description: schemaOptions,
     category: schemaOptions,
     price: schemaOptions,
   },
