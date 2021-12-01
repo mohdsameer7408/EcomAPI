@@ -75,6 +75,28 @@ const connectDB = async () => {
       }
     });
 
+    const productChangeStream = mongoose.connection
+      .collection("products")
+      .watch();
+    productChangeStream.on("change", (change) => {
+      console.log("Change stream was triggered!");
+      console.log(change);
+
+      if (change.operationType === "insert") {
+        const data = change.fullDocument;
+        console.log("A product was created!");
+        pusher.trigger("products", "inserted", data);
+      } else if (
+        change.operationType === "update" ||
+        change.operationType === "delete"
+      ) {
+        console.log("A product was updated or deleted!");
+        pusher.trigger("products", "inserted", change.documentKey);
+      } else {
+        console.log("An unknown operation was triggered!");
+      }
+    });
+
     const orderChangeStream = mongoose.connection.collection("orders").watch();
     orderChangeStream.on("change", (change) => {
       console.log("Change stream was triggered!");
