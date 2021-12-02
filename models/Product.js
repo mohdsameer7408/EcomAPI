@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema(
     description: schemaOptions,
     category: schemaOptions,
     price: schemaOptions,
+    sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
