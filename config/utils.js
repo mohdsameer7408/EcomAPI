@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcypt from "bcryptjs";
 
+// auth token generator
 const generateToken = (userData) =>
   jwt.sign(
     {
@@ -12,6 +13,7 @@ const generateToken = (userData) =>
     process.env.JWT_SECRET
   );
 
+// verification of auth token
 const verifyToken = (req, res, next) => {
   const token = req.header("auth-token");
   if (!token) return res.status(401).json("Access denied!");
@@ -25,6 +27,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+// encryption of password
 const generateHashedPassword = async (password) => {
   try {
     const salt = await bcypt.genSalt(10);
