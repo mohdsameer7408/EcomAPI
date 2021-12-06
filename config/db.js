@@ -35,6 +35,7 @@ const connectDB = async () => {
       bucketName: "images",
     });
 
+    // configured storage for mongoDB
     const storage = new GridFsStorage({
       url: DBUri,
       options: { useNewUrlParser: true, useUnifiedTopology: true },
