@@ -2,15 +2,20 @@ import { Router } from "express";
 
 import Product from "../models/Product.js";
 import { verifyToken } from "../config/utils.js";
+import { redisClient } from "../config/db.js";
 
 const router = Router();
 
 router.get("/products", async (req, res) => {
   try {
+    const data = await redisClient.get("products");
+    if (data) return res.status(200).json(JSON.parse(data));
+
     const products = await Product.find().populate(
       "sellerId",
       "-password -__v -createdAt -updatedAt"
     );
+    redisClient.setEx("products", 3600, JSON.stringify(products));
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json(`Something went wrong and an error occured: ${error}`);

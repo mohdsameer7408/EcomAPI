@@ -3,8 +3,9 @@ import { GridFsStorage } from "multer-gridfs-storage";
 import multer from "multer";
 import path from "path";
 import Pusher from "pusher";
+import { createClient } from "redis";
 
-let gfs, upload;
+let gfs, upload, redisClient;
 
 const connectDB = async () => {
   try {
@@ -54,6 +55,9 @@ const connectDB = async () => {
     });
 
     upload = multer({ storage });
+
+    redisClient = createClient();
+    await redisClient.connect();
 
     // making mongoDB realtime
     const userChangeStream = mongoose.connection.collection("users").watch();
@@ -144,5 +148,5 @@ const connectDB = async () => {
   }
 };
 
-export { gfs, upload };
+export { gfs, upload, redisClient };
 export default connectDB;
